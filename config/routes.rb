@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
-  resources :pizzerias, only: [:index, :show, :create, :new]
-  resources :pizzas, only: [:show, :create, :new]
+  resources :pizzerias, only: [:index, :show, :new, :create] do
+    resources :pizzas, only: [:new, :create, :show]
+  end
 end
