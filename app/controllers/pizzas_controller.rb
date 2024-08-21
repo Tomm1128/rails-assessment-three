@@ -1,11 +1,18 @@
 class PizzasController < ApplicationController
   def new
-    @pizza = Pizza.new
+    @pizzeria = Pizzeria.find(params[:pizzeria_id])
+    @pizza = @pizzeria.pizzas.build
   end
 
   def create
-    @pizza = Pizza.create(pizza_params)
-    redirect_to @pizza
+    @pizzeria = Pizzeria.find(params[:pizzeria_id])
+    @pizza = @pizzeria.pizzas.build(pizza_params)
+
+    if @pizza.save
+      redirect_to @pizzeria, notice: 'Pizza was successfully created.'
+    else
+      render :new
+    end
   end
 
   def show
@@ -15,6 +22,6 @@ class PizzasController < ApplicationController
   private
 
   def pizza_params
-    params.require(:pizza).permit(:name,:description, :pizzeria_id)
+    params.require(:pizza).permit(:name,:description)
   end
 end
